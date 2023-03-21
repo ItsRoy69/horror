@@ -1,32 +1,23 @@
-name: Lint
+name: Lint Codebase
 
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
   push:
-    branches:
-      - main
+    branches: ["main"]
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
 
 jobs:
-  run-linters:
-    name: Run linters
+  run-lint:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    lint:
-   
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v2
-    
-      - name: Super-Linter
-        uses: github/super-linter@v4.10.1
-        env: 
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
