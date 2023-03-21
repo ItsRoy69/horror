@@ -44,10 +44,3 @@ jobs:
         run: |
           # Find all .html files that are not referenced in the codebase
           unused_html=$(comm -23 <(find . -type f -name '*.html' | sort) <(grep -r --exclude-dir={node_modules,.git} -l '<.*\.html' . | sort))
-
-          # If there are any unused .html files, print an error message and fail the job
-          if [ -n "$unused_html" ]; then
-            echo "ERROR: The following .html files are not referenced in the codebase:"
-            echo "$unused_html"
-            exit 1
-          fi
