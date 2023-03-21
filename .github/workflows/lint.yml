@@ -18,25 +18,4 @@ jobs:
       - name: Check HTML usage
         run: npm run check:html
 
-  stylelint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.x'
-      - name: Install dependencies
-        run: npm install
-      - name: Run Stylelint
-        run: npm run lint:css
-
-  # Custom script to check for proper usage of .html files
-  check-html:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check HTML usage
-        run: |
-          # Find all .html files that are not referenced in the codebase
-          unused_html=$(comm -23 <(find . -type f -name '*.html' | sort) <(grep -r --exclude-dir={node_modules,.git} -l '<.*\.html' . | sort))
+  
