@@ -10,16 +10,44 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 16
-      - name: ESLint Code Review
-        uses: yousufkalim/eslint-action@latest
+          node-version: '16.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint
+        run: npm run lint:js
+      - name: Check HTML usage
+        run: npm run check:html
+
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Optional
-          eslint-args: "--ignore-path=.gitignore"
-          eslintrc: false # Set this to true if you want to use your own .eslintrc rules
-          extensions: "js"
-          auto-auto-fix-before-test: false # Set this to true if want to format and fix all the lint issue before testing
-          annotations: true
+          node-version: '16.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Run Stylelint
+        run: npm run lint:css
+
+  # Custom script to check for proper usage of .html files
+  check-html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check HTML usage
+        run: |
+          # Find all .html files that are not referenced in the codebase
+          unused_html=$(comm -23 <(find . -type f -name '*.html' | sort) <(grep -r --exclude-dir={node_modules,.git} -l '<.*\.html' . | sort))
+
+          # If there are any unused .html files, print an error message and fail the job
+          if [ -n "$unused_html" ]; then
+            echo "ERROR: The following .html files are not referenced in the codebase:"
+            echo "$unused_html"
+            exit 1
+          fi
