@@ -20,6 +20,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }} # Optional
           eslint-args: "--ignore-path=.gitignore"
           eslintrc: false # Set this to true if you want to use your own .eslintrc rules
-          extensions: "js,jsx,ts,tsx"
+          extensions: "js"
           auto-auto-fix-before-test: false # Set this to true if want to format and fix all the lint issue before testing
           annotations: true
