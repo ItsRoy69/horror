@@ -1,0 +1,15 @@
+name: Build and Check
+on: [pull_request]
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: |
+          npm install
+      - name: Build and Check
+        run: |
+          npm run build
+          npm run check
