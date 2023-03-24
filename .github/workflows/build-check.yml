@@ -8,12 +8,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: |
-        npm install
-        npm install -g http-server
+      uses: actions/checkout@v2   
 
     - name: Build and test
       run: |
