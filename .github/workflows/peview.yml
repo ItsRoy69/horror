@@ -1,23 +1,20 @@
-name: Pull Request Preview
-
+name: Preview example site
 on:
   pull_request:
-    types: [opened, edited]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+concurrency: preview-${{ github.ref }}
 jobs:
-  preview:
+  deploy-preview:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Build site
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy site
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
         with:
-          branch: gh-pages
-          folder: dist
+          source-dir: test
