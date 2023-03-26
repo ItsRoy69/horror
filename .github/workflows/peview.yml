@@ -1,0 +1,23 @@
+name: Pull Request Preview
+
+on:
+  pull_request:
+    types: [opened, edited]
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build site
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy site
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: dist
